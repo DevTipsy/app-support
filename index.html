@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assistance — Thibault Sanclemente</title>
+  <meta name="description" content="Page d'assistance pour les applications développées par Thibault Sanclemente.">
+  <style>
+    :root {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --text: #1d1d1f;
+      --text-secondary: #6e6e73;
+      --accent: #64c1d2;
+      --accent-text: #ffffff;
+      --border: #e5e5ea;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #000000;
+        --card: #1c1c1e;
+        --text: #f5f5f7;
+        --text-secondary: #98989d;
+        --accent: #64c1d2;
+        --accent-text: #00343f;
+        --border: #2c2c2e;
+      }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      padding: 32px 16px 64px;
+    }
+    .container { max-width: 640px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 40px; }
+    header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.02em; }
+    header p { color: var(--text-secondary); font-size: 1.05rem; }
+    .app-list { display: flex; flex-direction: column; gap: 14px; }
+    .app-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px 18px;
+    }
+    .app-icon {
+      width: 60px; height: 60px;
+      border-radius: 14px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: var(--border);
+    }
+    .app-info { flex: 1; min-width: 0; }
+    .app-info h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 2px; }
+    .app-info p { font-size: 0.9rem; color: var(--text-secondary); }
+    .email-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent);
+      color: var(--accent-text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 10px 16px;
+      border-radius: 12px;
+      white-space: nowrap;
+      transition: opacity 0.15s ease;
+    }
+    .email-btn:hover { opacity: 0.85; }
+    footer {
+      text-align: center;
+      margin-top: 48px;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 480px) {
+      .app-card { flex-wrap: wrap; }
+      .email-btn { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Assistance</h1>
+      <p>Une question, un bug ou une suggestion ? Sélectionnez l'application concernée.</p>
+    </header>
+
+    <div class="app-list" id="appList">
+      <!--
+        Pour ajouter une app, dupliquez un bloc <div class="app-card"> ci-dessous.
+        - data-app   : nom de l'app (utilisé dans l'objet du mail)
+        - src        : chemin du logo (placez le PNG dans le dossier /logos)
+        Le bouton email est généré automatiquement par le script en bas.
+      -->
+
+      <div class="app-card" data-app="MyMusic">
+        <img class="app-icon" src="logos/mymusic.png" alt="MyMusic" onerror="this.style.background='var(--accent)'">
+        <div class="app-info">
+          <h2>MyMusic</h2>
+          <p>Lecteur de musique local pour vos fichiers</p>
+        </div>
+        <!-- bouton injecté par le script -->
+      </div>
+
+    </div>
+
+    <footer>
+      <p>Développé par Thibault Sanclemente · <a id="genericMail" href="#">Contact général</a></p>
+    </footer>
+  </div>
+
+  <script>
+    // ===== Configuration =====
+    const SUPPORT_EMAIL = "thibault_sanclemente@icloud.com";
+
+    // Génère un lien mailto pré-rempli pour une app donnée
+    function buildMailto(appName) {
+      const subject = encodeURIComponent(`Assistance ${appName}`);
+      const body = encodeURIComponent(
+        `Bonjour,\n\n` +
+        `(Application : ${appName})\n\n` +
+        `Décrivez votre question ou le problème rencontré ci-dessous :\n\n`
+      );
+      return `mailto:${SUPPORT_EMAIL}?subject=${subject}&body=${body}`;
+    }
+
+    // Injecte un bouton "Envoyer un email" dans chaque carte d'app
+    document.querySelectorAll(".app-card").forEach(card => {
+      const appName = card.getAttribute("data-app") || "Application";
+      const btn = document.createElement("a");
+      btn.className = "email-btn";
+      btn.href = buildMailto(appName);
+      btn.textContent = "Envoyer un email";
+      card.appendChild(btn);
+    });
+
+    // Lien de contact général dans le footer
+    document.getElementById("genericMail").href =
+      `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent("Contact")}`;
+  </script>
+</body>
+</html>
