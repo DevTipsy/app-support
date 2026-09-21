@@ -2,7 +2,7 @@
 
 Page d'assistance centralisée pour les applications de Thibault Sanclemente.
 
-🔗 **Page en ligne :** https://VOTRE-COMPTE.github.io/app-support/
+🔗 **Page en ligne :** https://devtipsy.github.io/app-support/
 
 ## Ajouter une application
 
